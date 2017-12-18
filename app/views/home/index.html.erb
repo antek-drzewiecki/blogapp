@@ -1,0 +1,8 @@
+<% unless signed_in? %>
+  Sign in first
+  <%= link_to "sign in", user_doorkeeper_omniauth_authorize_path %>
+<% else %>
+  <% link_to "Sign out", destroy_user_session_path, :class => "btn primary" %>
+  You are logged in as
+  <%= current_user.email %>
+<% end %>
