@@ -4,11 +4,11 @@ class User < ApplicationRecord
   devise :omniauthable, omniauth_providers: [:doorkeeper]
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    user = where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
-      user.doorkeeper_access_token = auth.credentials.token
     end
-
+    user.update(doorkeeper_access_token: auth.credentials.token)
+    user
   end
 
   def self.new_with_session(params, session)
