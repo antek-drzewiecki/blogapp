@@ -9,7 +9,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user.update_doorkeeper_credentials(data)
     @user.save
 
-    sign_in_and_redirect @user
+    sign_in_and_redirect @user, event: :authentication
   end
 
+  def failure
+    redirect_to root_path
+  end
 end
