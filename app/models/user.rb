@@ -6,12 +6,9 @@ class User < ApplicationRecord
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
+      user.doorkeeper_access_token = auth.credentials.token
     end
 
-  end
-
-  def update_doorkeeper_credentials(oauth_data)
-    self.doorkeeper_access_token = oauth_data.credentials.token
   end
 
   def self.new_with_session(params, session)
